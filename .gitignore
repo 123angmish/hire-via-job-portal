@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+backend/hirevia/target/
+frontend/dist/
+frontend/node_modules/
+
+# Database and Runtime logs
+backend/hirevia/data/
+*.log
+*.mv.db
+*.trace.db
+
+# IDE and OS files
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# System generated artifacts
+.system_generated/
+.gemini/

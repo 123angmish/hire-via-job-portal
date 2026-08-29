@@ -1,0 +1,140 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Poller+One&family=Lily+Script+One&display=swap");
+@import "tailwindcss";
+
+* {
+  box-sizing: border-box;
+  font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+:root {
+  --primary-color: #1a6079;
+  --primary-dark: #124557;
+  --primary-light: #e0f2fe;
+  --accent-color: #0284c7;
+  --surface-bg: #f8fafc;
+}
+
+body {
+  background-color: var(--surface-bg);
+  color: #0f172a;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism & Modern Shadows */
+.glass-header {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.modern-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modern-card:hover {
+  border-color: rgba(26, 96, 121, 0.35);
+  box-shadow: 0 12px 30px -4px rgba(26, 96, 121, 0.12);
+  transform: translateY(-2px);
+}
+
+.custom-shadow {
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+}
+
+.searchShadow {
+  box-shadow: 0 4px 16px -2px rgba(26, 96, 121, 0.08);
+}
+
+.formShadow {
+  box-shadow: 0 10px 25px -5px rgba(26, 96, 121, 0.1), 0 8px 10px -6px rgba(26, 96, 121, 0.05);
+}
+
+.logo {
+  font-family: "Poller One", sans-serif;
+  letter-spacing: -0.5px;
+}
+
+.footerHeading::before {
+  background-color: white;
+  width: 40px;
+  height: 2px;
+  border-radius: 4px;
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+}
+
+/* Dashboard Sidebar Styling */
+.activeDashboardPage {
+  background-color: #f8fafc;
+  color: var(--primary-color) !important;
+  font-weight: 700;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  min-width: 297px;
+  position: relative;
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.05);
+}
+
+.activeDashboardPage::after {
+  background-color: #f8fafc;
+  height: 50px;
+  width: 50px;
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -50px;
+}
+
+.activeDashboardPage::before {
+  background-color: var(--primary-color);
+  border-bottom-right-radius: 70%;
+  height: 50px;
+  width: 50px;
+  content: "";
+  position: absolute;
+  right: 0px;
+  top: -50px;
+  z-index: 99;
+}
+
+.circle {
+  background-color: #f8fafc;
+  height: 50px;
+  width: 50px;
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50px;
+}
+
+.circle2 {
+  background-color: var(--primary-color);
+  border-top-right-radius: 70%;
+  height: 50px;
+  width: 50px;
+  content: "";
+  position: absolute;
+  right: 0px;
+  top: 56px;
+  z-index: 99;
+}
+
+@media (max-width: 640px) {
+  .activeDashboardPage::before,
+  .activeDashboardPage::after {
+    display: none;
+  }
+
+  .activeDashboardPage {
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+  }
+}
