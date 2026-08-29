@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, CircularProgress, TextField, Alert } from "@mui/material";
+import { Box, Button, CircularProgress, TextField, Alert, Chip } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { uploadToCloudinary } from "../../util/uploadToCloudinary";
@@ -11,7 +11,8 @@ import { clearJobDetails, fetchJobDetails } from "../../store/candidate/jobSlice
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
-import BusinessOutlinedIcon from "@mui/icons-material/BusinessOutlined";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import SmartToyOutlinedIcon from "@mui/icons-material/SmartToyOutlined";
 
 const applySchema = Yup.object({
   coverLetter: Yup.string()
@@ -33,6 +34,8 @@ const JobApply = () => {
   const [selectedFileName, setSelectedFileName] = useState("");
   const [uploading, setUploading] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
+  const [generatingAI, setGeneratingAI] = useState(false);
+  const [aiTone, setAiTone] = useState("professional");
 
   const token = localStorage.getItem("jwt");
   const isLoggedIn = !!token;
@@ -86,6 +89,36 @@ const JobApply = () => {
     },
   });
 
+  // AI Cover Letter Generator
+  const generateAICoverLetter = (tone = aiTone) => {
+    setGeneratingAI(true);
+    setAiTone(tone);
+
+    setTimeout(() => {
+      const candidateName = user?.fullName || "Candidate";
+      const jobTitle = jobDetails?.title || "Job Position";
+      const companyName = jobDetails?.company?.name || "your esteemed company";
+      const skills = user?.skills && user.skills.length > 0
+        ? user.skills.slice(0, 5).join(", ")
+        : "software engineering and modern development practices";
+      const experience = user?.experience ? `${user.experience} years of experience` : "strong technical foundation";
+
+      let letter = "";
+
+      if (tone === "enthusiastic") {
+        letter = `Dear Hiring Team at ${companyName},\n\nI am thrilled to submit my application for the ${jobTitle} role! With a ${experience} and hands-on expertise in ${skills}, I am genuinely excited about the innovative work happening at ${companyName}.\n\nThroughout my journey, I have consistently focused on building scalable, reliable solutions and collaborating with cross-functional teams to deliver impactful results. My technical skill set aligns seamlessly with the requirements for this role, and I am eager to bring fresh energy, strong problem-solving abilities, and continuous learning to your engineering team.\n\nThank you for considering my application. I would love the opportunity to discuss how my background and enthusiasm can contribute to the continued success of ${companyName}.\n\nWarm regards,\n${candidateName}`;
+      } else if (tone === "concise") {
+        letter = `Dear Hiring Manager,\n\nI am writing to express my interest in the ${jobTitle} opening at ${companyName}. With ${experience} specializing in ${skills}, I have the practical experience required to deliver high-quality outcomes in this position.\n\nKey qualifications I bring:\n• Solid expertise in ${skills}\n• Track record of clean code, problem-solving, and efficient system design\n• Proven capability to collaborate and adapt quickly to dynamic environments\n\nI have attached my resume for your review and look forward to discussing this opportunity further.\n\nSincerely,\n${candidateName}`;
+      } else {
+        // Professional (default)
+        letter = `Dear Hiring Manager at ${companyName},\n\nI am writing to formally apply for the ${jobTitle} position currently open at ${companyName}. Having developed a solid foundation with ${experience} in ${skills}, I am confident in my ability to make meaningful contributions to your team.\n\nMy background includes hands-on experience in designing, implementing, and maintaining robust applications. I take pride in writing scalable, maintainable code and solving complex engineering challenges. Furthermore, my strong communication and collaborative skills allow me to integrate smoothly into agile workflows.\n\nI welcome the opportunity to speak with you regarding how my technical skills and dedication align with the goals of ${companyName}. Thank you for your time and consideration.\n\nSincerely,\n${candidateName}`;
+      }
+
+      formik.setFieldValue("coverLetter", letter);
+      setGeneratingAI(false);
+    }, 600);
+  };
+
   const handleResumeUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -103,7 +136,6 @@ const JobApply = () => {
     setSelectedFileName(file.name);
     setUploading(true);
 
-    // Read local file as Data URL immediately as fallback
     const reader = new FileReader();
     reader.onload = () => {
       formik.setFieldValue("resumeUrl", reader.result);
@@ -213,7 +245,7 @@ const JobApply = () => {
         )}
 
         <form onSubmit={formik.handleSubmit} className="mt-6 space-y-6">
-          {/* Candidate Profile Details (Auto-filled) */}
+          {/* Candidate Profile Details */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200/70">
             <div>
               <p className="text-xs text-slate-400 font-medium">Applicant Name</p>
@@ -287,17 +319,53 @@ const JobApply = () => {
             )}
           </div>
 
-          {/* Cover Letter Section */}
+          {/* Cover Letter Section with AI Assistant */}
           <div>
-            <label className="block text-sm font-bold text-slate-800 mb-2">
-              Cover Letter / Note to Recruiter *
-            </label>
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <label className="block text-sm font-bold text-slate-800">
+                Cover Letter / Note to Recruiter *
+              </label>
+
+              {/* AI Auto-Generate Trigger */}
+              <div className="flex items-center gap-1.5 bg-gradient-to-r from-amber-50 to-indigo-50 border border-indigo-200/80 rounded-xl px-2.5 py-1">
+                <AutoAwesomeIcon sx={{ fontSize: 16, color: "#4f46e5" }} />
+                <span className="text-xs font-bold text-indigo-900">AI Assistant:</span>
+
+                <button
+                  type="button"
+                  onClick={() => generateAICoverLetter("professional")}
+                  disabled={generatingAI}
+                  className="text-[11px] font-semibold text-[#1a6079] hover:text-[#0f3d4d] hover:underline transition-colors px-1"
+                >
+                  {generatingAI ? "Drafting..." : "✨ Auto-Draft"}
+                </button>
+                <span className="text-slate-300">|</span>
+                <button
+                  type="button"
+                  onClick={() => generateAICoverLetter("enthusiastic")}
+                  disabled={generatingAI}
+                  className="text-[11px] font-semibold text-purple-700 hover:text-purple-900 hover:underline transition-colors px-1"
+                >
+                  🚀 Passionate
+                </button>
+                <span className="text-slate-300">|</span>
+                <button
+                  type="button"
+                  onClick={() => generateAICoverLetter("concise")}
+                  disabled={generatingAI}
+                  className="text-[11px] font-semibold text-emerald-700 hover:text-emerald-900 hover:underline transition-colors px-1"
+                >
+                  🎯 Concise
+                </button>
+              </div>
+            </div>
+
             <TextField
               name="coverLetter"
               multiline
-              rows={5}
+              rows={6}
               fullWidth
-              placeholder="Explain why your experience, skills, and background make you a great fit for this role..."
+              placeholder="Explain why your experience, skills, and background make you a great fit for this role, or click '✨ Auto-Draft' above to let AI generate it!"
               value={formik.values.coverLetter}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}

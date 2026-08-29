@@ -16,6 +16,7 @@ import { fetchCategories } from "../../../../store/candidate/categorySlice";
 import { fetchEmployerProfile } from "../../../../store/employer/employerSlice";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useNavigate } from "react-router-dom";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 
 const DEFAULT_CATEGORIES = [
   { id: 1, name: "Technology & Engineering" },
@@ -28,6 +29,108 @@ const DEFAULT_CATEGORIES = [
   { id: 8, name: "Customer Success & Support" },
 ];
 
+// AI Role Presets & Intelligent Generator
+const AI_ROLE_KNOWLEDGE = {
+  java: {
+    title: "Senior Java Backend Engineer",
+    description: "We are seeking an experienced Java Backend Engineer to design and scale enterprise microservices, implement high-throughput RESTful APIs, and optimize database architecture.",
+    categoryId: 1,
+    requiredExperience: "2-5 years",
+    avgSalary: "12-20 LPA",
+    responsibilities: [
+      "Architect and maintain high-performance Java Spring Boot microservices",
+      "Design efficient relational schemas, optimize SQL queries, and implement caching layers",
+      "Collaborate with frontend engineers to deliver robust, secure REST API integrations",
+      "Ensure code quality through unit testing, CI/CD pipelines, and peer code reviews",
+    ],
+    requiredSkills: ["Java", "Spring Boot", "Microservices", "REST APIs", "PostgreSQL", "Docker"],
+  },
+  react: {
+    title: "Frontend React.js Developer",
+    description: "Looking for a skilled Frontend Engineer passionate about crafting seamless user experiences, responsive web applications, and modular component design systems using React.js and Tailwind CSS.",
+    categoryId: 1,
+    requiredExperience: "1-4 years",
+    avgSalary: "10-18 LPA",
+    responsibilities: [
+      "Build modern, responsive, pixel-perfect user interfaces with React and Tailwind CSS",
+      "Manage global state with Redux Toolkit and optimize client-side rendering performance",
+      "Integrate complex backend REST APIs with graceful error handling and loaders",
+      "Write clean, modular, and maintainable TypeScript/JavaScript code",
+    ],
+    requiredSkills: ["React.js", "JavaScript", "Redux Toolkit", "Tailwind CSS", "REST APIs", "HTML5/CSS3"],
+  },
+  fullstack: {
+    title: "Full Stack Software Engineer",
+    description: "We are hiring a Full Stack Developer to build end-to-end features spanning intuitive frontend web interfaces to scalable backend microservices and databases.",
+    categoryId: 1,
+    requiredExperience: "2-5 years",
+    avgSalary: "14-24 LPA",
+    responsibilities: [
+      "Develop full-stack web applications from interactive UI to backend REST endpoints",
+      "Design database models and implement secure authentication/authorization workflows",
+      "Maintain CI/CD automation, cloud deployment, and system reliability",
+      "Lead technical feature design and mentor junior developers in agile sprints",
+    ],
+    requiredSkills: ["React.js", "Java / Node.js", "Spring Boot", "SQL", "Git", "Docker"],
+  },
+  ai: {
+    title: "AI & Machine Learning Engineer",
+    description: "Join our Data Science team to research, train, and deploy state-of-the-art machine learning models, LLM pipelines, and predictive analytics systems.",
+    categoryId: 4,
+    requiredExperience: "2-6 years",
+    avgSalary: "16-30 LPA",
+    responsibilities: [
+      "Develop and fine-tune machine learning and deep learning models for production",
+      "Build scalable data preprocessing and feature extraction pipelines",
+      "Integrate LLM APIs, vector embeddings, and semantic search algorithms",
+      "Collaborate with product teams to translate business requirements into AI solutions",
+    ],
+    requiredSkills: ["Python", "Machine Learning", "PyTorch / TensorFlow", "LLMs", "Pandas", "NLP"],
+  },
+  devops: {
+    title: "Cloud DevOps & Platform Engineer",
+    description: "Looking for a DevOps Engineer to manage our cloud infrastructure, automate deployment pipelines, and maintain high availability and security across production clusters.",
+    categoryId: 1,
+    requiredExperience: "3-6 years",
+    avgSalary: "15-26 LPA",
+    responsibilities: [
+      "Manage Kubernetes clusters, container orchestration, and multi-region AWS cloud services",
+      "Design and maintain automated CI/CD pipelines with GitHub Actions / Jenkins",
+      "Implement comprehensive monitoring, alerting, and log aggregation with Prometheus / Grafana",
+      "Enforce cloud infrastructure security and automated infrastructure-as-code (Terraform)",
+    ],
+    requiredSkills: ["AWS", "Kubernetes", "Docker", "CI/CD", "Terraform", "Linux"],
+  },
+  product: {
+    title: "Technical Product Manager",
+    description: "Seeking a Technical Product Manager to define product roadmap, align engineering and design teams, and drive end-to-end product execution for customer-centric features.",
+    categoryId: 2,
+    requiredExperience: "3-5 years",
+    avgSalary: "16-28 LPA",
+    responsibilities: [
+      "Define product strategy, user stories, and measurable OKRs for engineering sprints",
+      "Conduct user research and translate market insights into high-impact feature backlogs",
+      "Work closely with engineering leads and UX designers to ship high-quality product releases",
+      "Track product KPIs, engagement metrics, and continuous iteration cycles",
+    ],
+    requiredSkills: ["Product Roadmap", "Agile / Scrum", "User Research", "Jira", "Data Analytics"],
+  },
+  design: {
+    title: "UI/UX Product Designer",
+    description: "We are seeking a creative UI/UX Designer to build beautiful, intuitive, and accessible digital experiences across web and mobile platforms.",
+    categoryId: 3,
+    requiredExperience: "1-4 years",
+    avgSalary: "8-16 LPA",
+    responsibilities: [
+      "Create wireframes, user journeys, interactive prototypes, and high-fidelity mockups",
+      "Maintain and evolve scalable Figma design systems and component libraries",
+      "Conduct usability tests and iterate designs based on real user feedback",
+      "Collaborate closely with frontend engineers during design handoff and QA",
+    ],
+    requiredSkills: ["Figma", "UI/UX Design", "Wireframing", "Prototyping", "Design Systems", "User Research"],
+  },
+};
+
 const PostJob = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,6 +138,7 @@ const PostJob = () => {
   const { categories } = useSelector((state) => state.category);
   const { createJobLoading, createJobError } = useSelector((state) => state.employerJob);
   const [postSuccessMsg, setPostSuccessMsg] = useState("");
+  const [aiGenerating, setAiGenerating] = useState(false);
 
   useEffect(() => {
     dispatch(clearJobErrors());
@@ -80,7 +184,6 @@ const PostJob = () => {
     }),
 
     onSubmit: async (values, { resetForm }) => {
-      // Collect any pending input
       let finalResponsibilities = [...values.responsibilities];
       if (values.responsibilityInput.trim()) {
         finalResponsibilities.push(values.responsibilityInput.trim());
@@ -125,6 +228,42 @@ const PostJob = () => {
     },
   });
 
+  // AI Autofill / Suggestion Engine
+  const handleAISuggestions = () => {
+    setAiGenerating(true);
+    setTimeout(() => {
+      const titleInput = (formik.values.title || "").toLowerCase();
+      let matchedKey = "fullstack";
+
+      if (titleInput.includes("java") || titleInput.includes("spring") || titleInput.includes("backend")) {
+        matchedKey = "java";
+      } else if (titleInput.includes("react") || titleInput.includes("front") || titleInput.includes("web")) {
+        matchedKey = "react";
+      } else if (titleInput.includes("ai") || titleInput.includes("ml") || titleInput.includes("data") || titleInput.includes("python")) {
+        matchedKey = "ai";
+      } else if (titleInput.includes("devops") || titleInput.includes("cloud") || titleInput.includes("aws") || titleInput.includes("infra")) {
+        matchedKey = "devops";
+      } else if (titleInput.includes("product") || titleInput.includes("manager") || titleInput.includes("scrum")) {
+        matchedKey = "product";
+      } else if (titleInput.includes("design") || titleInput.includes("ui") || titleInput.includes("ux")) {
+        matchedKey = "design";
+      }
+
+      const preset = AI_ROLE_KNOWLEDGE[matchedKey];
+      if (!formik.values.title) {
+        formik.setFieldValue("title", preset.title);
+      }
+      formik.setFieldValue("description", preset.description);
+      formik.setFieldValue("categoryId", preset.categoryId);
+      formik.setFieldValue("requiredExperience", preset.requiredExperience);
+      formik.setFieldValue("avgSalary", preset.avgSalary);
+      formik.setFieldValue("responsibilities", preset.responsibilities);
+      formik.setFieldValue("requiredSkills", preset.requiredSkills);
+
+      setAiGenerating(false);
+    }, 500);
+  };
+
   const addResHandler = () => {
     const value = formik.values.responsibilityInput.trim();
     if (!value) return;
@@ -161,7 +300,7 @@ const PostJob = () => {
 
   return (
     <section className="px-4 sm:px-6 md:px-10 pb-16">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
           <h2 className="text-[20px] lg:text-[24px] font-extrabold text-slate-900">
             Post a New Job
@@ -170,6 +309,29 @@ const PostJob = () => {
             Publish high-reach job openings and receive verified applications instantly.
           </p>
         </div>
+
+        {/* AI Assistant Button */}
+        <Button
+          type="button"
+          onClick={handleAISuggestions}
+          disabled={aiGenerating}
+          variant="outlined"
+          startIcon={<AutoAwesomeIcon sx={{ color: "#4f46e5" }} />}
+          sx={{
+            textTransform: "capitalize",
+            borderColor: "#818cf8",
+            color: "#4338ca",
+            fontWeight: 700,
+            fontSize: "13px",
+            borderRadius: "14px",
+            bgcolor: "#eef2ff",
+            px: 2.5,
+            py: 1,
+            "&:hover": { bgcolor: "#e0e7ff", borderColor: "#6366f1" },
+          }}
+        >
+          {aiGenerating ? "AI Generating Specs..." : "✨ AI Auto-Fill Job Specs"}
+        </Button>
       </div>
 
       {postSuccessMsg && (
@@ -199,7 +361,7 @@ const PostJob = () => {
               error={formik.touched.title && Boolean(formik.errors.title)}
               helperText={formik.touched.title && formik.errors.title}
               label="Job Title *"
-              placeholder="e.g. Senior Full Stack Developer"
+              placeholder="e.g. Senior Java Backend Developer"
               variant="outlined"
             />
 
@@ -300,7 +462,7 @@ const PostJob = () => {
                 fullWidth
                 name="responsibilityInput"
                 label="Key Responsibilities"
-                placeholder="Type a responsibility and press Enter or click Add"
+                placeholder="Type a responsibility and press Enter or click Add (or use AI Auto-Fill above)"
                 variant="outlined"
                 value={formik.values.responsibilityInput}
                 onChange={formik.handleChange}
