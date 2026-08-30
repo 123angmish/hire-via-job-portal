@@ -5,9 +5,17 @@
 [![React](https://img.shields.io/badge/React-18-blue.svg?logo=react)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-7.3-purple.svg?logo=vite)](https://vitejs.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC.svg?logo=tailwind-css)](https://tailwindcss.com/)
+[![Redux Toolkit](https://img.shields.io/badge/Redux_Toolkit-2.2-764ABC.svg?logo=redux)](https://redux-toolkit.js.org/)
+[![Spring Security](https://img.shields.io/badge/Spring_Security-6.x-6DB33F.svg?logo=springsecurity)](https://spring.io/projects/spring-security)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 **Hire Via** is a secure, full-stack Job Portal and Talent Acquisition Platform. It connects job seekers with employers through an AI-powered job matching engine, real-time application tracking (ATS), company workspace management, interactive messaging, and role-based access control.
+
+---
+
+## 🏷️ Repository Topics & Technologies
+
+`react` • `vite` • `tailwindcss` • `redux-toolkit` • `material-ui` • `spring-boot` • `java` • `java21` • `spring-security` • `jwt` • `hibernate` • `jpa` • `job-portal` • `recruitment-platform` • `applicant-tracking-system` • `ats` • `ai-job-matching` • `fullstack` • `rest-api` • `h2-database`
 
 ---
 
@@ -20,6 +28,13 @@
 - **IDOR Protection**: Strict server-side verification ensures employers can only modify/delete their own job listings and applicants.
 - **XSS & Input Sanitization**: HTML tag stripping, script neutralization, and phone/email normalization on all inputs.
 - **Unified Global Exception Handling**: Standardized error DTOs (`timestamp`, `status`, `error`, `message`, `validationErrors`) without leaking internal stack traces or SQL schemas.
+
+---
+
+### 🤖 AI-Powered Intelligence Suite
+- **AI Job Match & Compatibility Engine**: Real-time compatibility score (%) and skill gap breakdown.
+- **AI Cover Letter Auto-Drafter**: 1-click tailored cover letters with Professional, Passionate, and Concise tones.
+- **AI Job Role & Specs Suggester**: Automatic generation of industry-standard job descriptions, responsibilities, and required skill sets.
 
 ---
 
@@ -140,7 +155,7 @@ hire-via-job-portal/
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/<YOUR_USERNAME>/hire-via-job-portal.git
+git clone https://github.com/123angmish/hire-via-job-portal.git
 cd hire-via-job-portal
 ```
 
@@ -169,16 +184,6 @@ npm install
 npm run dev
 ```
 > The application will open at: `http://localhost:5173`
-
----
-
-## 🧪 Running Automated Tests & Verification
-To execute the comprehensive end-to-end verification test suite:
-
-```powershell
-# In project root (PowerShell)
-.\test-production-suite.ps1
-```
 
 ---
 
