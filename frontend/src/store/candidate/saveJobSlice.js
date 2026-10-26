@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../config/api";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -8,7 +9,7 @@ export const fetchSavedJobs = createAsyncThunk(
       const token = localStorage.getItem("jwt");
 
       const { data } = await axios.get(
-        "http://localhost:8081/api/saved-jobs/all",
+        `${API_BASE_URL}/api/saved-jobs/all`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -34,7 +35,7 @@ export const saveJob = createAsyncThunk(
       const token = localStorage.getItem("jwt");
 
       const { data } = await axios.post(
-        `http://localhost:8081/api/saved-jobs/add/${id}`,
+        `${API_BASE_URL}/api/saved-jobs/add/${id}`,
         {},
         {
           headers: {
@@ -61,7 +62,7 @@ export const removeSaveJob = createAsyncThunk(
       const token = localStorage.getItem("jwt");
 
       const { data } = await axios.delete(
-        `http://localhost:8081/api/saved-jobs/remove/${id}`,
+        `${API_BASE_URL}/api/saved-jobs/remove/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

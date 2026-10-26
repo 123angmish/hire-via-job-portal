@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../config/api";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -8,7 +9,7 @@ export const fetchRecommendedJobs = createAsyncThunk(
       const token = localStorage.getItem("jwt");
 
       const { data } = await axios.get(
-        "http://localhost:8081/api/jobs/recommended",
+        `${API_BASE_URL}/api/jobs/recommended`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

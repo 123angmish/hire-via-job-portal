@@ -55,7 +55,7 @@ public class SpringSecurity {
 
             configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept", "X-Requested-With", "Origin"));
             configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-            configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:3000"));
+            configuration.setAllowedOriginPatterns(Arrays.asList("http://localhost:*", "http://127.0.0.1:*", "https://*.vercel.app", "https://*.onrender.com", "https://*"));
             configuration.setAllowCredentials(true);
             configuration.setExposedHeaders(Collections.singletonList("Authorization"));
             configuration.setMaxAge(3600L);

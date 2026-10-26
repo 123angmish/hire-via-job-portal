@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../config/api";
 import React, { useState, useEffect } from "react";
 import { TextField, Button, CircularProgress } from "@mui/material";
 import { Link, useNavigate, useLocation } from "react-router-dom";
@@ -58,7 +59,7 @@ const Login = () => {
         };
 
         const { data } = await axios.post(
-          "http://localhost:8081/auth/login",
+          `${API_BASE_URL}/auth/login`,
           payload
         );
 

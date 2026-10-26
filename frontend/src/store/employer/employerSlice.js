@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../config/api";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -8,7 +9,7 @@ export const fetchEmployerProfile = createAsyncThunk(
       const token = localStorage.getItem("jwt");
 
       const { data } = await axios.get(
-        "http://localhost:8081/api/employers/profile",
+        `${API_BASE_URL}/api/employers/profile`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -33,8 +34,8 @@ export const editCompanyProfile = createAsyncThunk(
     try {
       const token = localStorage.getItem("jwt");
       const url = companyData?.id
-        ? `http://localhost:8081/api/employer/companies/${companyData.id}`
-        : `http://localhost:8081/api/employer/companies/profile`;
+        ? `${API_BASE_URL}/api/employer/companies/${companyData.id}`
+        : `${API_BASE_URL}/api/employer/companies/profile`;
 
       const { data } = await axios.put(
         url,

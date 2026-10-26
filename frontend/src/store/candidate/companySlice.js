@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../config/api";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -8,7 +9,7 @@ export const fetchCompanies = createAsyncThunk(
       const token = localStorage.getItem("jwt");
 
       const { data } = await axios.get(
-        "http://localhost:8081/api/companies/all",
+        `${API_BASE_URL}/api/companies/all`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

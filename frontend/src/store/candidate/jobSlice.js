@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../config/api";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -7,7 +8,7 @@ export const fetchJobs = createAsyncThunk(
     try {
       const token = localStorage.getItem("jwt");
 
-      const { data } = await axios.get("http://localhost:8081/api/jobs/all", {
+      const { data } = await axios.get(`${API_BASE_URL}/api/jobs/all`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -28,7 +29,7 @@ export const fetchJobDetails = createAsyncThunk(
     try {
       const token = localStorage.getItem("jwt");
 
-      const { data } = await axios.get(`http://localhost:8081/api/jobs/${id}`, {
+      const { data } = await axios.get(`${API_BASE_URL}/api/jobs/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -52,7 +53,7 @@ export const searchJobs = createAsyncThunk(
       const token = localStorage.getItem("jwt");
 
       const { data } = await axios.get(
-        `http://localhost:8081/api/jobs/search?keyword=${keyword}&location=${location}`,
+        `${API_BASE_URL}/api/jobs/search?keyword=${keyword}&location=${location}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -76,7 +77,7 @@ export const sortJobs = createAsyncThunk(
   async ({ fieldName, order = "asc" }, { rejectWithValue }) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8081/api/jobs/sort?field=${fieldName}&order=${order}`,
+        `${API_BASE_URL}/api/jobs/sort?field=${fieldName}&order=${order}`,
       );
       return data;
     } catch (error) {

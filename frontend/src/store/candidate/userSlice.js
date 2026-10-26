@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../config/api";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -8,7 +9,7 @@ export const fetchUserProfile = createAsyncThunk(
       const token = localStorage.getItem("jwt");
 
       const { data } = await axios.get(
-        "http://localhost:8081/api/users/profile",
+        `${API_BASE_URL}/api/users/profile`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -35,7 +36,7 @@ export const editProfile = createAsyncThunk(
       console.log(token);
 
       const { data } = await axios.put(
-        "http://localhost:8081/api/users/edit-profile",
+        `${API_BASE_URL}/api/users/edit-profile`,
         profileData,
         {
           headers: {

@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../config/api";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -8,8 +9,8 @@ export const fetchApplicants = createAsyncThunk(
       const token = localStorage.getItem("jwt");
 
       const url = employerId
-        ? `http://localhost:8081/api/employer/applications/${employerId}`
-        : `http://localhost:8081/api/employer/applications`;
+        ? `${API_BASE_URL}/api/employer/applications/${employerId}`
+        : `${API_BASE_URL}/api/employer/applications`;
 
       const { data } = await axios.get(url, {
         headers: {
@@ -36,7 +37,7 @@ export const updateApplicantStatus = createAsyncThunk(
       const token = localStorage.getItem("jwt");
 
       const { data } = await axios.put(
-        `http://localhost:8081/api/employer/applications/${applicationId}/status?status=${status}`,
+        `${API_BASE_URL}/api/employer/applications/${applicationId}/status?status=${status}`,
         { status },
         {
           headers: {
@@ -64,7 +65,7 @@ export const searchApplicants = createAsyncThunk(
       const token = localStorage.getItem("jwt");
 
       const { data } = await axios.get(
-        `http://localhost:8081/api/employer/applications/${employerId}/search?keyword=${keyword}`,
+        `${API_BASE_URL}/api/employer/applications/${employerId}/search?keyword=${keyword}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

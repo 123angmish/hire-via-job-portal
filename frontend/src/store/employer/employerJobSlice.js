@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../config/api";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -9,7 +10,7 @@ export const postJob = createAsyncThunk(
       const token = localStorage.getItem("jwt");
 
       const { data } = await axios.post(
-        "http://localhost:8081/api/employer/jobs",
+        `${API_BASE_URL}/api/employer/jobs`,
         jobData,
         {
           headers: {
@@ -37,7 +38,7 @@ export const fetchJobs = createAsyncThunk(
       const token = localStorage.getItem("jwt");
 
       const { data } = await axios.get(
-        "http://localhost:8081/api/employer/jobs",
+        `${API_BASE_URL}/api/employer/jobs`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -63,7 +64,7 @@ export const deleteJob = createAsyncThunk(
       const token = localStorage.getItem("jwt");
 
       const { data } = await axios.delete(
-        `http://localhost:8081/api/employer/jobs/delete/${id}`,
+        `${API_BASE_URL}/api/employer/jobs/delete/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -89,7 +90,7 @@ export const searchJobs = createAsyncThunk(
       const token = localStorage.getItem("jwt");
 
       const { data } = await axios.get(
-        `http://localhost:8081/api/jobs/search?keyword=${keyword}`,
+        `${API_BASE_URL}/api/jobs/search?keyword=${keyword}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -115,7 +116,7 @@ export const updateJob = createAsyncThunk(
       const token = localStorage.getItem("jwt");
 
       const { data } = await axios.put(
-        `http://localhost:8081/api/employer/jobs/update/${jobData?.id}`,
+        `${API_BASE_URL}/api/employer/jobs/update/${jobData?.id}`,
         jobData,
         {
           headers: {

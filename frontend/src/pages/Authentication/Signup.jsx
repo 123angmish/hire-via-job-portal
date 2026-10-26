@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../config/api";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -90,7 +91,7 @@ const Signup = () => {
         };
 
         const { data } = await axios.post(
-          "http://localhost:8081/auth/signup",
+          `${API_BASE_URL}/auth/signup`,
           payload
         );
 

@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../config/api";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -13,7 +14,7 @@ export const fetchChatMessages = createAsyncThunk(
       }
 
       const { data } = await axios.get(
-        `http://localhost:8081/api/chat/${applicationId}`,
+        `${API_BASE_URL}/api/chat/${applicationId}`,
         { headers }
       );
       return data || [];
@@ -41,7 +42,7 @@ export const sendChatMessage = createAsyncThunk(
       }
 
       const { data } = await axios.post(
-        "http://localhost:8081/api/chat/send",
+        `${API_BASE_URL}/api/chat/send`,
         {
           applicationId,
           jobId,
